@@ -17,6 +17,7 @@
 
 
 function addRow(){
+   console.log("a")
     let rowNum =document.getElementsByClassName("inputRow");
     let inputRow = rowNum[rowNum.length-1];
     const cells = rowNum[rowNum.length-1].cells;
@@ -34,21 +35,9 @@ function addRow(){
 }   
 }
 
-document.getElementsByClassName("inputRow")[document.getElementsByClassName("inputRow").length - 1 ].addEventListener("input",addRow)
+document.getElementsByClassName("inputRow")[document.getElementsByClassName("inputRow").length - 1 ].cells[0].addEventListener("input",addRow)
 
-let rowNum =document.getElementsByClassName("inputRow");
-    let LastRow = rowNum[rowNum.length-1];
-    const newRow = LastRow.cloneNode(true);
-    console.log(newRow)
-    const newcells =newRow.cells;
-    console.log(newcells)
 
-    for (const cell of newcells){ 
-    cell.querySelector("input").value=""
-    console.log(cell.querySelector("input").value)}
-
-    LastRow.parentNode.insertBefore(newRow,LastRow.nextSibling);
-    document.getElementsByClassName("inputRow")[document.getElementsByClassName("inputRow").length - 1].addEventListener("input",addRow2)
 
 function addRow2(){
 
@@ -68,6 +57,9 @@ function addRow2(){
 
 const tableBody = document.querySelector("#input")
 
+function wait(ms){
+  return new Promise(resolve => setTimeout(resolve,ms))
+}
 function csvpaste(e){
   const pasetedText = e.clipboardData.getData("text")
   console.log(pasetedText)
@@ -86,11 +78,15 @@ function csvpaste(e){
   } 
   console.log(k)
   
-  const pasetedcell = e.target;
-  console.log(pasetedcell.value)
-  pasetedcell.value = ""
-  console.log(pasetedcell.value)
-  
+  async function stop() {
+    const pasetedcell = e.target;
+    await wait(100)
+    console.log(pasetedcell.value)
+    pasetedcell.value = ""
+    console.log(pasetedcell.value)
+
+    await wait(100)
+
   for (let i = 0; i < table.length ; i ++){
     const element = table[i];
     console.log(element)
@@ -101,8 +97,8 @@ function csvpaste(e){
           tableBody.querySelectorAll(".inputRow")[k+i].cells[j].querySelector("input").value = data
        }addRow2()
     }
-  }
-
+  } stop()
+}
 tableBody.addEventListener("paste",csvpaste)
 
 
@@ -134,31 +130,35 @@ function makelist(){
          let value = setubivalue.cells[i].querySelector("input").value
          console.log(value)
          if(value !== ""){
+        async  function stop (){
         if (i === 0){
-            const code = document.createElement("tr")
+            const dummycode = document.createElement("tr")
+            const code = document.createElement("th")
             code.textContent = value
             console.log(code)
+            dummycode.appendChild(code)
             if(setubivalue.cells[1].querySelector("input").value === "大"){
-               document.getElementById("main").appendChild(code)
+               document.getElementById("main").appendChild(dummycode)
             } else if (setubivalue.cells[1].querySelector("input").value === "小"){
-               document.getElementById("main-s").appendChild(code.cloneNode(true))
+               document.getElementById("main-s").appendChild(dummycode.cloneNode(true))
             }
-            document.getElementById("sub").appendChild(code.cloneNode(true))
-            document.getElementById("sub-2").appendChild(code.cloneNode(true))
-            document.getElementById("subcode").appendChild(code.cloneNode(true))
+            document.getElementById("sub").appendChild(dummycode.cloneNode(true))
+            document.getElementById("sub-2").appendChild(dummycode.cloneNode(true))
+            document.getElementById("subcode").appendChild(dummycode.cloneNode(true))
             console.log(document.getElementById("main").cells)
+         
 
-        } else if (i === 2){
+        } if (i === 2){
             if(setubivalue.cells[1].querySelector("input").value === "大"){
             const code = document.createElement("th")
             code.textContent = value
             console.log(code)
-            document.getElementById("main").getElementsByTagName("tr")[k+1].appendChild(code)
+            document.getElementById("main").getElementsByTagName("tr")[document.getElementById("main").getElementsByTagName("tr").length-1].appendChild(code)
            } else if (setubivalue.cells[1].querySelector("input").value === "小"){
             const code = document.createElement("th")
             code.textContent = value
             console.log(code)
-            document.getElementById("main-s").getElementsByTagName("tr")[k+1].appendChild(code)
+            document.getElementById("main-s").getElementsByTagName("tr")[document.getElementById("main-s").getElementsByTagName("tr").length-1].appendChild(code)
            }
                
         } else if (i === 3){
@@ -166,38 +166,84 @@ function makelist(){
              const code = document.createElement("th")
              code.textContent = value
              console.log(code)
-             document.getElementById("main").getElementsByTagName("tr")[k+1].appendChild(code)
+             document.getElementById("main").getElementsByTagName("tr")[document.getElementById("main").getElementsByTagName("tr").length-1].appendChild(code)
            } else if (setubivalue.cells[1].querySelector("input").value === "小"){
              const code = document.createElement("th")
              code.textContent = value
              console.log(code)
-             document.getElementById("main-s").getElementsByTagName("tr")[k+1].appendChild(code)
+             document.getElementById("main-s").getElementsByTagName("tr")[document.getElementById("main-s").getElementsByTagName("tr").length-1].appendChild(code)
            }
 
         } else if (i === 4){
             const code = document.createElement("th")
             code.textContent = value
             console.log(code)
-            document.getElementById("sub").getElementsByTagName("tr")[k+1].appendChild(code)
+            console.log(document.getElementById("sub").getElementsByTagName("tr")[k+1])
+            document.getElementById("sub").getElementsByTagName("tr")[k+2].appendChild(code)
         
         } else if (i === 5){
             const code = document.createElement("th")
             code.textContent = value
             console.log(code)
-            document.getElementById("sub-2").getElementsByTagName("tr")[k+1].appendChild(code)
+            document.getElementById("sub-2").getElementsByTagName("tr")[k+2].appendChild(code)
 
         } else if (i === 6){
           const code = document.createElement("th")
           code.textContent = value
           console.log(code)
-          document.getElementById("subcode").getElementsByTagName("tr")[k+1].appendChild(code)
-
+          document.getElementById("subcode").getElementsByTagName("tr")[k+2].appendChild(code)
+        }
 }   console.log("aaa")
+   stop()
 }
 }
 }
 }
 
+function change(){
+  document.getElementById("button2").querySelector("img").src = "okasama3.jpg"
+  document.getElementById("button2").removeEventListener("click",makelist)
+
+  document.getElementById("message").innerText = "リセットするならリロードするにょろ～"
+}
 
 
 document.getElementById("button2").addEventListener("click",makelist)
+document.getElementById("button2").addEventListener("click",change)
+
+
+function check(){
+   async function stop() {
+    await wait(100)
+  for (let i = 0 ; i <document.getElementById("input").getElementsByClassName("inputRow").length; i++){
+    for (let k = 0 ; k <document.getElementById("input").getElementsByClassName("inputRow")[i].cells.length; k++){
+       if(k === 0){
+         document.getElementById("input").getElementsByClassName("inputRow")[i].cells[k].innerText.length === 8;
+         let error = document.createElement("p")
+         let message =document.getElementById("input").getElementsByClassName("inputRow")[i].cells[k].innerText 
+         error.innerText = + message + "は英字4文字と数字4文字だよ‼"
+         document.getElementById("error").appendChild(error)
+      }if(k === 1){
+         document.getElementById("input").getElementsByClassName("inputRow")[i].cells[k].innerText === "大" ||"小";
+
+      }if(k === 2){
+         document.getElementById("input").getElementsByClassName("inputRow")[i].cells[k].innerText.length === 4;
+
+      }if(k === 3){
+         document.getElementById("input").getElementsByClassName("inputRow")[i].cells[k].innerText.length === 2;
+
+      }if(k === 4){
+         typeof document.getElementById("input").getElementsByClassName("inputRow")[i].cells[k].innerText === "number";
+
+      }if(k === 5){
+         typeof document.getElementById("input").getElementsByClassName("inputRow")[i].cells[k].innerText === "number";
+     
+      }if(k === 6){
+         typeof document.getElementById("input").getElementsByClassName("inputRow")[i].cells[k].innerText === "number";
+     
+     }
+    }
+  }
+}
+stop()
+}
