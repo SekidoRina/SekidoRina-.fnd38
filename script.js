@@ -226,7 +226,7 @@ stop();
  
 
 function game(){
-   const mondai = document.querySelector("h3);
+   const mondai = document.querySelector("h3");
    const kotae = document.getElementById("answer").querySelector("input");
    const result = document.getElementById("result");
    let correct = 0;
