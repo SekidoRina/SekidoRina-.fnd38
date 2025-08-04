@@ -118,9 +118,15 @@ function makelist(){
             } else if (setubivalue.cells[1].querySelector("input").value === "小"){
                document.getElementById("main-s").appendChild(dummycode.cloneNode(true));
             }
+           if(setubivalue.cells[4].querySelector("input").value !== ""){
             document.getElementById("sub").appendChild(dummycode.cloneNode(true));
+            }
+           if(setubivalue.cells[5].querySelector("input").value !== ""){
             document.getElementById("sub-2").appendChild(dummycode.cloneNode(true));
+           }
+           if(setubivalue.cells[6].querySelector("input").value !== ""){
             document.getElementById("subcode").appendChild(dummycode.cloneNode(true));
+           }
             console.log(document.getElementById("main").cells);
          
 
